@@ -10,11 +10,14 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 @app.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
-        animal = request.form["animal"]
+        theme = request.form["theme"]
+        language = request.form["language"]
+        length = request.form["length"]
         response = openai.Completion.create(
-            model="text-davinci-002",
-            prompt=generate_prompt(animal),
-            temperature=0.6,
+            model="text-davinci-003",
+            prompt=generate_prompt(theme, language),
+            temperature=0.1,
+            max_tokens=int(length),
         )
         return redirect(url_for("index", result=response.choices[0].text))
 
@@ -22,14 +25,11 @@ def index():
     return render_template("index.html", result=result)
 
 
-def generate_prompt(animal):
-    return """Suggest three names for an animal that is a superhero.
+def generate_prompt(theme, language):
+    return f"Write an essay on the following topic: {theme.capitalize()}. " \
+           f"The essay needs to be written acting as an expert." \
+           f"The theme must be delivered completely in {language}." \
+           f"Write an assay as long as possible." \
+           f"Do not insert personal comment or referrals to any sentiment." \
+           f"Do not use phrases twice."
 
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: {}
-Names:""".format(
-        animal.capitalize()
-    )
