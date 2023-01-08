@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Virtual Professor</title>
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='professor.png') }}"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}" />
+  </head>
+  <body>
+    <img src="{{ url_for('static', filename='professor.png') }}" class="icon" />    <h1>AI Teaching Assistant</h1>
+    <br>
+    <!-- Add button to go back to index page -->
+    <a href="{{ url_for('index') }}"><button>Back to homepage</button></a>
+    <br>
+    <br>
+    <form action="/history" method="post">
+      <input type="text" name="theme" placeholder="Enter the essay theme here" required />
+      <input type="submit" value="Submit" />
+    </form>
+    {% if result %}
+    <br>
+    <div class="result">{{ result }}</div>
+    {% endif %}
+  </body>
+</html>

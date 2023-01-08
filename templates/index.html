@@ -9,15 +9,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}" />
   </head>
   <body>
-    <img src="{{ url_for('static', filename='professor.png') }}" class="icon" />    <h1>AI Teaching Assistant</h1>
-    <form action="/" method="post">
-      <input type="text" name="theme" placeholder="Enter the essay theme here" required />
-      <input type="text" name="language" placeholder="Enter the language" required />
-      <input type="number" name="length" placeholder="Enter the length of the answer" required />
-      <input type="submit" value="Submit" />
+    <img src="{{ url_for('static', filename='professor.png') }}" class="icon" />
+    <h1>AI Teaching Assistant</h1>
+    <br>
+    <a href="/history"><button>History</button></a>
+    <a href="/math"><button>Math</button></a>
+    <br>
+    <form action="/" method="post" id="language-form">
+        <select name="language" onchange="document.getElementById('language-form').submit();">
+            <option value="english">English</option>
+            <option value="french">French</option>
+            <option value="spanish">Spanish</option>
+            <option value="italian">Italian</option>
+        </select>
     </form>
-    {% if result %}
-    <div class="result">{{ result }}</div>
-    {% endif %}
   </body>
 </html>
