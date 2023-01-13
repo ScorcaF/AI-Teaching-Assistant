@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Virtual Professor - Latin</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='professor.png') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}" />
+  </head>
+  <body>
+    <img src="{{ url_for('static', filename='professor.png') }}" class="icon" />
+    <h1>AI Teaching Assistant</h1>
+    <br>
+    <a href="{{ url_for('index') }}"><button id="back">Homepage</button></a>
+    <br>
+    <br>
+    <form action="/latin_translation" method="post" id="language-form">
+        <select name="language" id="language" onchange="updateButtonText()">
+            <option value="english" selected>English</option>
+            <option value="french">French</option>
+            <option value="spanish">Spanish</option>
+            <option value="italian">Italian</option>
+        </select>
+        <br>
+        <label for="problem" id="label">Enter the text to translate:</label><br>
+        <textarea name="problem" id="problem" rows="6" cols="200"></textarea><br>
+        <input type="submit" id="translate_button" value="Translate">
+    </form>
+    {% if result %}
+      <h2>Solution:</h2>
+      <p>{{ result }}</p>
+    {% endif %}
+    <script>
+      var buttonText = {
+        english: {
+          label: "Enter the text to translate:",
+          translate: "Translate"
+        },
+        french: {
+          label: "Entrez le texte à traduire:",
+          translate: "Traduire"
+        },
+        spanish: {
+          label: "Ingrese el texto a traducir:",
+          translate: "Traducir"
+        },
+        italian: {
+          label: "Inserire il testo da tradurre:",
+          translate: "Traduci"
+        }
+      };
+
+      var select = document.getElementById("language");
+      var language = select.options[select.selectedIndex].value;
+      function updateButtonText() {
+        language = select.options[select.selectedIndex].value;
+        document.getElementById("label").innerHTML = buttonText[language].label;
+        document.getElementById("translate_button").value = buttonText[language].translate;
+      }
+      updateButtonText();
+    </script>
+  </body>
+</html>
+
