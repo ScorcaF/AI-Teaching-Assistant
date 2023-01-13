@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Virtual Professor</title>
+    <title>AI Teaching Assistant</title>
     <link
       rel="shortcut icon"
       href="{{ url_for('static', filename='professor.png') }}"
@@ -12,16 +12,92 @@
     <img src="{{ url_for('static', filename='professor.png') }}" class="icon" />
     <h1>AI Teaching Assistant</h1>
     <br>
-    <a href="/history"><button>History</button></a>
-    <a href="/math"><button>Math</button></a>
+    <a href="/essay_writing"><button id="essay_writing_button">Essay writing</button></a>
+    <a href="/math"><button id="math_button">Math</button></a>
+    <a href="/latin_translation"><button id="latin_translation_button">Latin translation</button></a>
+    <a href="/greek_translation"><button id="greek_translation_button">Greek translation</button></a>
+
     <br>
-    <form action="/" method="post" id="language-form">
-        <select name="language" onchange="document.getElementById('language-form').submit();">
-            <option value="english">English</option>
-            <option value="french">French</option>
-            <option value="spanish">Spanish</option>
-            <option value="italian">Italian</option>
-        </select>
+{#    <form action="/" method="post" id="language-form">#}
+{#        <select name="language" onchange="document.getElementById('language-form').submit();">#}
+{#            <option value="english" selected>English</option>#}
+{#            <option value="french">French</option>#}
+{#            <option value="spanish">Spanish</option>#}
+{#            <option value="italian">Italian</option>#}
+{#        </select>#}
+{#        </form>#}
+
+    <form method="post" id="language-form">
+      <select name="language" id="language">
+        <option value="english" selected>English</option>
+        <option value="french">French</option>
+        <option value="spanish">Spanish</option>
+        <option value="italian">Italian</option>
+
+      </select>
     </form>
+    <script>
+      var language = "english";
+      var select = document.getElementById("language");
+      select.addEventListener("change", function() {
+        var selectedValue = this.value;
+        language = selectedValue;
+        var data = new FormData();
+        data.append("language", language);
+        fetch("/", {
+          method: "POST",
+          body: data
+        });
+      });
+      var buttonText = {
+          english: {
+              essay_writing: "Essay writing",
+              math: "Math",
+              latin_translation: "Latin Translation",
+              greek_translation: "Greek Translation"
+
+          },
+          french: {
+              essay_writing: "Rédaction d'essai",
+              math: "Mathématiques",
+              latin_translation: "Traduction latine",
+              greek_translation: "Traduction grecque"
+
+          },
+          spanish: {
+              essay_writing: "Escritura de ensayos",
+              math: "Matemáticas",
+              latin_translation: "Traducción latina",
+              greek_translation: "Traducción griega"
+
+          },
+          italian: {
+              essay_writing: "Scrittura di saggi",
+              math: "Matematica",
+              latin_translation: "Traduzione latina",
+              greek_translation: "Traduzione greca"
+
+          }
+      }
+      var select = document.getElementById("language");
+      select.addEventListener("change", function() {
+        var selectedValue = this.value;
+        language = selectedValue;
+        var data = new FormData();
+        data.append("language", language);
+        fetch("/", {
+          method: "POST",
+          body: data
+        });
+        updateButtonText();
+      });
+
+      function updateButtonText() {
+        document.getElementById("essay_writing_button").innerHTML = buttonText[language].essay_writing;
+        document.getElementById("math_button").innerHTML = buttonText[language].math;
+        document.getElementById("latin_translation_button").innerHTML = buttonText[language].latin_translation;
+        document.getElementById("greek_translation_button").innerHTML = buttonText[language].greek_translation; }
+      updateButtonText();
+    </script>
   </body>
 </html>

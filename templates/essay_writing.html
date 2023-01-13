@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Virtual Professor</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='professor.png') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}" />
+  </head>
+  <body>
+    <img src="{{ url_for('static', filename='professor.png') }}" class="icon" />    <h1>AI Teaching Assistant</h1>
+    <br>
+    <!-- Add button to go back to index page -->
+    <a href="{{ url_for('index') }}"><button id="homepage_button">Homepage</button></a>
+    <br>
+    <br>
+    <form action="/essay_writing" method="post">
+        <select name="language" id="language" onchange="updateButtonText()">
+            <option value="english" selected>English</option>
+            <option value="french">French</option>
+            <option value="spanish">Spanish</option>
+            <option value="italian">Italian</option>
+        </select>
+    <br>
+
+      <input type="text" name="theme" id="label" placeholder="Enter the essay theme here" required />
+      <input type="submit" value="Submit" id="submit_button" />
+    </form>
+    {% if result %}
+      <h2>Solution:</h2>
+      <p>{{ result }}</p>
+    {% endif %}
+      <script>
+
+      var buttonText = {
+        english: {
+          label: "Enter the essay theme:",
+        },
+        french: {
+          label: "Entrez le thème de l'essai:",
+        },
+        spanish: {
+          label: "Introduzca el tema del ensayo:",
+        },
+        italian: {
+          label: "Inserire il tema del saggio:",
+        }
+      };
+
+      var select = document.getElementById("language");
+      var language = select.options[select.selectedIndex].value;
+      function updateButtonText() {
+        language = select.options[select.selectedIndex].value;
+        document.getElementById("label").placeholder = buttonText[language].label;
+      }
+      updateButtonText();
+    </script>
+  </body>
+</html>

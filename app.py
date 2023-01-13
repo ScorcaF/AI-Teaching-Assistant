@@ -1,4 +1,6 @@
 import os
+from PIL import Image
+import pytesseract
 
 import openai
 from flask import Flask, redirect, render_template, request, url_for
@@ -6,18 +8,18 @@ from flask import Flask, redirect, render_template, request, url_for
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 global language
-
+language = 'italian'
 
 @app.route("/", methods=("GET", "POST"))
 def index():
     global language
     if request.method == "POST":
-        language = request.form.get("language", "english")
+        language = request.form.get("language", "italian")
     return render_template("index.html")
 
 
-@app.route('/history', methods=("GET", "POST"))
-def history():
+@app.route('/essay_writing', methods=("GET", "POST"))
+def essay_writing():
     global language
     if request.method == "POST":
         theme = request.form["theme"]
@@ -32,10 +34,10 @@ def history():
             temperature=0.1,
             max_tokens=3400,
         )
-        return redirect(url_for("history", result=response.choices[0].text))
+        return redirect(url_for("essay_writing", result=response.choices[0].text))
 
     result = request.args.get("result")
-    return render_template("history.html", result=result)
+    return render_template("essay_writing.html", result=result)
 
 
 @app.route('/math', methods=("GET", "POST"))
@@ -45,7 +47,7 @@ def math():
         problem = request.form["problem"]
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=f"The problem solution needs to be written highlighting the mathematical operations"
+            prompt=f"Solve the following problem highlighting the mathematical operations"
                    f" and commenting them."
                    f"The problem is the following: : {problem}"
                    f"The answer must be delievered completely in {language}.",
@@ -57,3 +59,44 @@ def math():
     result = request.args.get("result")
     return render_template("math.html", result=result)
 
+@app.route('/latin_translation', methods=("GET", "POST"))
+def latin_translation():
+    global language
+    if request.method == "POST":
+        text = request.form["problem"]
+        prompt = f"Tranlate the following text from ancient Latin to {language}: \"{text}\""
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=prompt,
+            temperature=0.1,
+            max_tokens=4096 - 2*len(prompt),
+            top_p=1.0,
+            frequency_penalty=0,
+            presence_penalty=0,
+            best_of=1
+        )
+        return redirect(url_for("latin_translation", result=response.choices[0].text))
+
+    result = request.args.get("result")
+    return render_template("latin_translation.html", result=result)
+
+@app.route('/greek_translation', methods=("GET", "POST"))
+def greek_translation():
+    global language
+    if request.method == "POST":
+        text = request.form["problem"]
+        prompt = f"Tranlate the following text from ancient Greek to {language}: \"{text}\""
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=prompt,
+            temperature=0.1,
+            max_tokens=4096 - 2*len(prompt),
+            top_p=1.0,
+            frequency_penalty=0,
+            presence_penalty=0,
+            best_of=1
+        )
+        return redirect(url_for("latin_translation", result=response.choices[0].text))
+
+    result = request.args.get("result")
+    return render_template("latin_translation.html", result=result)

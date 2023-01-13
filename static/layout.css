@@ -10,6 +10,11 @@ input {
   line-height: 24px;
   color: #353740;
   font-family: "Roboto", Helvetica, sans-serif;
+  background-image: url('custom white.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #00aeff;
 }
 body {
   display: flex;
@@ -18,6 +23,7 @@ body {
   padding-top: 60px;
   background-color: #f2f3f5;
 }
+
 .icon {
   width: 170px;
 }
@@ -34,26 +40,49 @@ form {
   width: 320px;
 }
 input[type="text"],
-input[type="number"] {
+input[type="number"],
+input[type="problem"] {
   padding: 12px 16px;
   border: 1px solid #10a37f;
   border-radius: 4px;
   margin-bottom: 16px;
   background-color: #fff;
 }
+
 ::placeholder {
   color: #8e8ea0;
   opacity: 1;
 }
 input[type="submit"] {
   padding: 12px 0;
-  color: #fff;
+  color: #10a37f;
   background-color: #10a37f;
   border: none;
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
+  font-size: large;
+
 }
 .result {
   font-weight: 500
+}
+
+button {
+    height: 50px;
+    width: 250px;
+    margin-bottom: 16px;
+    background-color: #28b995;
+
+    font-size: large;
+}
+
+select {
+    height: 30px;
+    width: 300px;
+    font-size: large;
+}
+
+label {
+    font-size: large;
 }

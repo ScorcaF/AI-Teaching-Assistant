@@ -9,20 +9,59 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}" />
   </head>
   <body>
-    <img src="{{ url_for('static', filename='professor.png') }}" class="icon" /> <h1>Math Problem Solver</h1>
+    <img src="{{ url_for('static', filename='professor.png') }}" class="icon" /> <h1>AI Teaching Assistant</h1>
     <br>
     <!-- Add button to go back to index page -->
-    <a href="{{ url_for('index') }}"><button>Back to homepage</button></a>
+    <a href="{{ url_for('index') }}"><button>Homepage</button></a>
     <br>
     <br>
     <form action="/math" method="post">
-      <label for="problem">Enter a math problem:</label><br>
+        <select name="language" id="language" onchange="updateButtonText()">
+            <option value="english" selected>English</option>
+            <option value="french">French</option>
+            <option value="spanish">Spanish</option>
+            <option value="italian">Italian</option>
+        </select>
+        <br>
+      <label for="problem" id="label">Enter a math problem:</label><br>
       <textarea name="problem" id="problem" rows="4" cols="50"></textarea><br>
-      <input type="submit" value="Solve">
+      <input type="submit" id="solve" value="Solve">
     </form>
     {% if result %}
       <h2>Solution:</h2>
       <p>{{ result }}</p>
     {% endif %}
+      <script>
+          var buttonText = {
+            english: {
+              label: "Enter a math problem:",
+              solve: "Solve",
+              homepage: "Homepage"
+            },
+            french: {
+              label: "Entrez un problème mathématique:",
+              solve: "Résoudre",
+              homepage: "Page d'accueil"
+            },
+            spanish: {
+              label: "Ingrese un problema matemático:",
+              solve: "Resolver",
+              homepage: "Página de inicio"
+            },
+            italian: {
+              label: "Inserire un problema matematico:",
+              solve: "Risolvi",
+              homepage: "Homepage"
+            }
+          };
+          var select = document.getElementById("language");
+          var language = select.options[select.selectedIndex].value;
+          function updateButtonText() {
+            language = select.options[select.selectedIndex].value;
+            document.getElementById("label").innerHTML = buttonText[language].label;
+            document.getElementById("solve").value = buttonText[language].solve;
+          }
+          updateButtonText();
+    </script>
   </body>
 </html>
