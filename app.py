@@ -1,6 +1,6 @@
 import os
-from PIL import Image
-import pytesseract
+# from PIL import Image
+# import pytesseract
 
 import openai
 from flask import Flask, redirect, render_template, request, url_for
